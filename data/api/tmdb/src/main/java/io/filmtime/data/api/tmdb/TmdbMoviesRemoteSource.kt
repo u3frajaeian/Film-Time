@@ -9,7 +9,7 @@ interface TmdbMoviesRemoteSource {
 
   suspend fun getMovieDetails(movieId: Int): Result<VideoDetail, GeneralError>
 
-  suspend fun getTrendingMovies(): Result<List<VideoThumbnail>, GeneralError>
+  suspend fun getTrendingMovies(page: Int): Result<List<VideoThumbnail>, GeneralError>
 
   suspend fun getPopularMovies(): Result<List<VideoThumbnail>, GeneralError>
 

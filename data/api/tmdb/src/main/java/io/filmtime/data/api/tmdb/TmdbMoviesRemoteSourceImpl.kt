@@ -12,7 +12,7 @@ internal class TmdbMoviesRemoteSourceImpl @Inject constructor(
   private val tmdbMoviesService: TmdbMoviesService,
 ) : TmdbMoviesRemoteSource {
 
-  override suspend fun getTrendingMovies(): Result<List<VideoThumbnail>, GeneralError> =
+  override suspend fun getTrendingMovies(page: Int): Result<List<VideoThumbnail>, GeneralError> =
     getMovieList(ListType.DAY)
 
   override suspend fun getPopularMovies(): Result<List<VideoThumbnail>, GeneralError> =
@@ -44,8 +44,8 @@ internal class TmdbMoviesRemoteSourceImpl @Inject constructor(
       is NetworkResponse.UnknownError -> Result.Failure(GeneralError.UnknownError(result.error))
     }
 
-  private suspend fun getMovieList(type: ListType): Result<List<VideoThumbnail>, GeneralError> =
-    when (val result = tmdbMoviesService.getMovieList(type.value)) {
+  private suspend fun getMovieList(type: ListType, page: Int = 1): Result<List<VideoThumbnail>, GeneralError> =
+    when (val result = tmdbMoviesService.getMovieList(type.value, page = page)) {
       is NetworkResponse.Success -> {
         val videoListResponse = result.body?.results ?: emptyList()
         Result.Success(videoListResponse.map { it.toVideoThumbnail() })

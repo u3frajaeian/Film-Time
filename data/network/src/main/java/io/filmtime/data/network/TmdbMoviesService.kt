@@ -17,5 +17,6 @@ interface TmdbMoviesService {
   suspend fun getMovieList(
     @Path("list_type") listType: String,
     @Query("api_key") apiKey: String = BuildConfig.TMDB_API_KEY,
+    @Query("page") page: Int = 1,
   ): NetworkResponse<TmdbVideoListResponse, TmdbErrorResponse>
 }
