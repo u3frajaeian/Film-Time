@@ -8,6 +8,8 @@ android {
 }
 
 dependencies {
-  implementation(project(":domain:tmdb-genre"))
+  implementation(project(":domain:tmdb-movies"))
+  implementation(project(":domain:tmdb-shows"))
+
   api(libs.paging.compose)
 }

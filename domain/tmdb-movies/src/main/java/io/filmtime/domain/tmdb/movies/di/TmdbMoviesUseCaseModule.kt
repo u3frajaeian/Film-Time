@@ -7,12 +7,14 @@ import dagger.hilt.components.SingletonComponent
 import io.filmtime.domain.tmdb.movies.GetMovieCollectionUseCase
 import io.filmtime.domain.tmdb.movies.GetMovieCreditsUseCase
 import io.filmtime.domain.tmdb.movies.GetMovieDetailsUseCase
+import io.filmtime.domain.tmdb.movies.GetMoviesByGenreUseCase
 import io.filmtime.domain.tmdb.movies.GetMoviesListUseCase
 import io.filmtime.domain.tmdb.movies.GetSimilarMoviesUseCase
 import io.filmtime.domain.tmdb.movies.ObserveMoviesStreamUseCase
 import io.filmtime.domain.tmdb.movies.impl.GetMovieCollectionUseCaseImpl
 import io.filmtime.domain.tmdb.movies.impl.GetMovieCreditsUseCaseImpl
 import io.filmtime.domain.tmdb.movies.impl.GetMovieDetailsUseCaseImpl
+import io.filmtime.domain.tmdb.movies.impl.GetMoviesByGenreUseCaseImpl
 import io.filmtime.domain.tmdb.movies.impl.GetMoviesListUseCaseImpl
 import io.filmtime.domain.tmdb.movies.impl.GetSimilarMoviesUseCaseImpl
 import io.filmtime.domain.tmdb.movies.impl.ObserveMoviesStreamUseCaseImpl
@@ -38,4 +40,7 @@ internal abstract class TmdbMoviesUseCaseModule {
 
   @Binds
   abstract fun bindGetMovieCollectionUseCase(impl: GetMovieCollectionUseCaseImpl): GetMovieCollectionUseCase
+
+  @Binds
+  abstract fun bindGetMoviesByGenreUseCase(impl: GetMoviesByGenreUseCaseImpl): GetMoviesByGenreUseCase
 }
