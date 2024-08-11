@@ -9,15 +9,17 @@ import androidx.paging.filter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.filmtime.data.model.VideoThumbnail
 import io.filmtime.data.model.VideoType
-import io.filmtime.domain.tmdb.genre.GetVideosByGenreUseCase
+import io.filmtime.domain.tmdb.movies.GetMoviesByGenreUseCase
+import io.filmtime.domain.tmdb.shows.GetShowsByGenreUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 @HiltViewModel
 class VideoGridGenreViewModel @Inject constructor(
-  private val savedStateHandle: SavedStateHandle,
-  private val videosByGenreUseCase: GetVideosByGenreUseCase,
+  savedStateHandle: SavedStateHandle,
+  private val moviesByGenreUseCase: GetMoviesByGenreUseCase,
+  private val showsByGenreUseCase: GetShowsByGenreUseCase,
 ) : ViewModel() {
 
   private val genreId: Long =
@@ -41,4 +43,10 @@ class VideoGridGenreViewModel @Inject constructor(
         }
       }
       .cachedIn(viewModelScope)
+
+  private fun videosByGenreUseCase(genreId: Long, videoType: VideoType): Flow<PagingData<VideoThumbnail>> =
+    when (videoType) {
+      VideoType.Movie -> moviesByGenreUseCase(genreId)
+      VideoType.Show -> showsByGenreUseCase(genreId)
+    }
 }
