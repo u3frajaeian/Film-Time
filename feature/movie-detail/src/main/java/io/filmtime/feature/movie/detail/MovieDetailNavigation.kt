@@ -14,7 +14,7 @@ fun NavGraphBuilder.movieDetailScreen(
   onStreamReady: (DestinationRoute, streamUrl: String) -> Unit,
   onCastItemClick: (DestinationRoute, castId: Long) -> Unit,
   onMovieClick: (DestinationRoute, tmdbId: Int) -> Unit,
-  onGenreClick: (DestinationRoute, genreId: Long, videoType: VideoType) -> Unit,
+  onGenreClick: (DestinationRoute, genreId: Long, genreName: String, videoType: VideoType) -> Unit,
   onBack: () -> Unit,
 ) {
   composable(
@@ -28,7 +28,7 @@ fun NavGraphBuilder.movieDetailScreen(
   ) {
     MovieDetailScreen(
       viewModel = hiltViewModel(),
-      onGenreClick = { genre, type -> onGenreClick(rootRoute, genre.id, type) },
+      onGenreClick = { genre, type -> onGenreClick(rootRoute, genre.id, genre.name, type) },
       onStreamReady = { onStreamReady(rootRoute, it) },
       onCastItemClick = { onCastItemClick(rootRoute, it) },
       onMovieClick = { onMovieClick(rootRoute, it) },
