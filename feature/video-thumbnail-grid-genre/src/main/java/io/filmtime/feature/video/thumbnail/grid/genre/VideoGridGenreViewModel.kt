@@ -12,21 +12,26 @@ import io.filmtime.data.model.VideoType
 import io.filmtime.domain.tmdb.movies.GetMoviesByGenreUseCase
 import io.filmtime.domain.tmdb.shows.GetShowsByGenreUseCase
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 @HiltViewModel
-class VideoGridGenreViewModel @Inject constructor(
+internal class VideoGridGenreViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle,
   private val moviesByGenreUseCase: GetMoviesByGenreUseCase,
   private val showsByGenreUseCase: GetShowsByGenreUseCase,
 ) : ViewModel() {
 
-  private val genreId: Long =
-    savedStateHandle["genre_id"] ?: throw IllegalArgumentException("genre_id must be provided")
+  private val args = VideoThumbnailGridArgs(savedStateHandle)
+  private val genreId = args.genreId
+  private val videoType = args.videoType
 
-  private val videoType: VideoType =
-    savedStateHandle["video_type"] ?: throw IllegalArgumentException("video_type must be provided")
+  val state = MutableStateFlow(
+    VideoThumbnailGridUiState(
+      title = args.genreName,
+    ),
+  )
 
   val pagedList: Flow<PagingData<VideoThumbnail>> =
     videosByGenreUseCase(genreId, videoType)
