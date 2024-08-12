@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.itemKey
 import io.filmtime.core.designsystem.plus
 import io.filmtime.data.model.VideoThumbnail
 import io.filmtime.data.model.VideoType
@@ -33,7 +34,7 @@ fun VideoThumbnailGrid(
   ) {
     items(
       pagedList.itemCount,
-      key = { index -> pagedList[index]?.ids?.tmdbId ?: index },
+      key = pagedList.itemKey { item -> item.ids.tmdbId!! }, // probable source of crash if we do not use tmdb as source
     ) { index ->
       val videoThumbnail = pagedList[index]
       if (videoThumbnail != null) {
