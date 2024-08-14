@@ -6,7 +6,7 @@ import io.fimltime.data.tmdb.movies.TmdbMovieRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetBookmarkedMoviesUseCaseImpl @Inject constructor(
+internal class GetBookmarkedMoviesUseCaseImpl @Inject constructor(
   private val repository: TmdbMovieRepository,
 ) : GetBookmarkedMoviesUseCase {
   override suspend operator fun invoke(): Flow<List<VideoThumbnail>> =
