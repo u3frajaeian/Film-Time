@@ -20,4 +20,7 @@ interface BookmarksDao {
 
   @Query("SELECT EXISTS(SELECT 1 FROM bookmarks WHERE tmdb_id = :tmdbId AND video_type = :type)")
   fun isBookmarked(tmdbId: Int, type: VideoType): Flow<Boolean>
+
+  @Query("SELECT * FROM bookmarks")
+  fun getAllBookmarks(): Flow<List<BookmarkEntity>>
 }
