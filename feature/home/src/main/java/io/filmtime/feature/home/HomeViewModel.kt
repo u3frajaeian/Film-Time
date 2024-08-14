@@ -7,8 +7,10 @@ import io.filmtime.core.ui.common.toUiMessage
 import io.filmtime.data.model.Result.Failure
 import io.filmtime.data.model.Result.Success
 import io.filmtime.data.model.VideoListType
+import io.filmtime.domain.tmdb.movies.GetBookmarkedMoviesUseCase
 import io.filmtime.domain.tmdb.movies.GetMoviesListUseCase
 import io.filmtime.domain.tmdb.shows.GetTrendingShowsUseCase
+import io.filmtime.feature.home.SectionType.None
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
@@ -22,6 +24,7 @@ import javax.inject.Inject
 internal class HomeViewModel @Inject constructor(
   private val getMoviesList: GetMoviesListUseCase,
   private val getTrendingShows: GetTrendingShowsUseCase,
+  private val getBookmarkedMoviesUseCase: GetBookmarkedMoviesUseCase,
 ) : ViewModel() {
 
   private val _state = MutableStateFlow(HomeUiState(isLoading = false))
@@ -35,6 +38,7 @@ internal class HomeViewModel @Inject constructor(
     viewModelScope.launch {
       loadTrendingMovies()
       loadTrendingShows()
+      loadBookmarkedMovies()
     }
   }
 
@@ -105,5 +109,24 @@ internal class HomeViewModel @Inject constructor(
         }
       }
       .collect()
+  }
+
+  private suspend fun loadBookmarkedMovies() {
+    getBookmarkedMoviesUseCase()
+      .onEach { result ->
+        _state.update { state ->
+          state.copy(
+            bookmarkedMovies = if (result.isEmpty()) {
+              null
+            } else {
+              VideoSection(
+                type = None,
+                title = "Bookmarked Movies",
+                items = result,
+              )
+            },
+          )
+        }
+      }.collect()
   }
 }
