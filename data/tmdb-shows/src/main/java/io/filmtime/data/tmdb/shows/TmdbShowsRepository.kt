@@ -32,6 +32,8 @@ interface TmdbShowsRepository {
   suspend fun similar(movieId: Int): Result<List<VideoThumbnail>, GeneralError>
 
   suspend fun episodesBySeason(showId: Int, seasonNumber: Int): Result<List<EpisodeThumbnail>, GeneralError>
+
+  suspend fun getBookmarkedShows(): Flow<List<VideoThumbnail>>
 }
 
 enum class ShowListType {
