@@ -23,4 +23,7 @@ interface BookmarksDao {
 
   @Query("SELECT * FROM bookmarks")
   fun getAllBookmarks(): Flow<List<BookmarkEntity>>
+
+  @Query("SELECT * FROM bookmarks WHERE video_type = :type")
+  fun getAllBookmarksByType(type: VideoType): Flow<List<BookmarkEntity>>
 }

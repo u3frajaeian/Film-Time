@@ -14,6 +14,7 @@ import io.filmtime.data.model.Result.Failure
 import io.filmtime.data.model.Result.Success
 import io.filmtime.data.model.VideoDetail
 import io.filmtime.data.model.VideoThumbnail
+import io.filmtime.data.model.VideoType.Movie
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -101,7 +102,7 @@ internal class TmdbMovieRepositoryImpl @Inject constructor(
     tmdbMoviesRemoteSource.getCollection(collectionId)
 
   override suspend fun getBookmarkedMovies(): Flow<List<VideoThumbnail>> {
-    return bookmarksDao.getAllBookmarks().map { bookmarks ->
+    return bookmarksDao.getAllBookmarksByType(Movie).map { bookmarks ->
       val movieList: MutableList<VideoThumbnail> = mutableListOf()
       for (id in bookmarks) {
         when (val result = fetchMovieDetailsFromNetwork(id.tmdbId)) {
