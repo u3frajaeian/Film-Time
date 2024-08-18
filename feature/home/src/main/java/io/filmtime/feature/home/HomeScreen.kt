@@ -41,7 +41,7 @@ fun HomeScreen(
   ) {
     Box(modifier = Modifier.padding(it)) {
       if (state.isLoading) {
-        LoadingVideoSectionRow(numberOfSections = 3)
+        LoadingVideoSectionRow(numberOfSections = 4)
       } else if (state.error != null) {
         ErrorContent(
           uiMessage = state.error!!,
@@ -53,6 +53,18 @@ fun HomeScreen(
           verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
           state.bookmarkedMovies?.let { section ->
+            item {
+              VideoSectionRow(
+                title = section.title,
+                items = section.items,
+                onMovieClick = onMovieClick,
+                onShowClick = onShowClick,
+                onSectionClick = null,
+              )
+            }
+          }
+
+          state.bookmarkedShows?.let { section ->
             item {
               VideoSectionRow(
                 title = section.title,
