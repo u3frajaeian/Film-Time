@@ -40,7 +40,12 @@ internal class HomeViewModel @Inject constructor(
     viewModelScope.launch {
       loadTrendingMovies()
       loadTrendingShows()
+    }
+
+    viewModelScope.launch {
       loadBookmarkedShows()
+    }
+    viewModelScope.launch {
       loadBookmarkedMovies()
     }
   }
