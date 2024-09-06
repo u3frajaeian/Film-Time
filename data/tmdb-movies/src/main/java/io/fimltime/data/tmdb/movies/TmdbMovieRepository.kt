@@ -3,6 +3,7 @@ package io.fimltime.data.tmdb.movies
 import androidx.paging.PagingData
 import io.filmtime.data.model.GeneralError
 import io.filmtime.data.model.MovieCollection
+import io.filmtime.data.model.MovieVideo
 import io.filmtime.data.model.Person
 import io.filmtime.data.model.Result
 import io.filmtime.data.model.VideoDetail
@@ -34,6 +35,8 @@ interface TmdbMovieRepository {
   suspend fun getCollection(collectionId: Int): Result<MovieCollection, GeneralError>
 
   suspend fun getBookmarkedMovies(): Flow<List<VideoThumbnail>>
+
+  suspend fun getMovieVideos(movieId: Int): Result<List<MovieVideo>, GeneralError>
 }
 
 enum class MovieListType {
