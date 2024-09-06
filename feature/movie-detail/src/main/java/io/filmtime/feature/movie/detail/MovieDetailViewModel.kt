@@ -1,5 +1,6 @@
 package io.filmtime.feature.movie.detail
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,6 +13,7 @@ import io.filmtime.domain.bookmarks.ObserveBookmarkUseCase
 import io.filmtime.domain.stream.GetStreamInfoUseCase
 import io.filmtime.domain.tmdb.movies.GetMovieCollectionUseCase
 import io.filmtime.domain.tmdb.movies.GetMovieDetailsUseCase
+import io.filmtime.domain.tmdb.movies.GetMovieVideosUseCase
 import io.filmtime.domain.trakt.GetRatingsUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,6 +34,7 @@ class MovieDetailViewModel @Inject constructor(
   private val observeBookmark: ObserveBookmarkUseCase,
   private val getRatings: GetRatingsUseCase,
   private val getCollection: GetMovieCollectionUseCase,
+  private val getMovieVideos: GetMovieVideosUseCase,
 ) : ViewModel() {
 
   private val videoId: Int = savedStateHandle["video_id"] ?: throw IllegalStateException("videoId is required")
@@ -44,6 +47,7 @@ class MovieDetailViewModel @Inject constructor(
   init {
     loadMovieDetail()
     observeBookmark()
+    loadVideos()
   }
 
   fun loadMovieDetail() = viewModelScope.launch {
@@ -122,5 +126,21 @@ class MovieDetailViewModel @Inject constructor(
 
   fun removeBookmark() = viewModelScope.launch {
     deleteBookmark(videoId, Movie)
+  }
+
+  private fun loadVideos() = viewModelScope.launch {
+    getMovieVideos(videoId)
+      .fold(
+        onSuccess = {
+          _state.update { state ->
+            state.copy(
+              videos = it,
+            )
+          }
+        },
+        onFailure = {
+          Log.d(this@MovieDetailViewModel.toString(), it.toString())
+        },
+      )
   }
 }

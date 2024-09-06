@@ -3,6 +3,7 @@ package io.filmtime.feature.movie.detail
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,6 +11,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -34,6 +37,7 @@ import io.filmtime.core.designsystem.theme.FilmTimeTheme
 import io.filmtime.core.designsystem.theme.PreviewFilmTimeTheme
 import io.filmtime.core.designsystem.theme.ThemePreviews
 import io.filmtime.core.ui.common.componnents.ErrorContent
+import io.filmtime.core.ui.common.componnents.VideoCard
 import io.filmtime.core.ui.common.componnents.VideoDescription
 import io.filmtime.core.ui.common.componnents.VideoInfo
 import io.filmtime.core.ui.common.componnents.VideoSectionRow
@@ -90,6 +94,7 @@ fun MovieDetailScreen(
   onGenreClick: (VideoGenre, VideoType) -> Unit,
 ) {
   val videoDetail = state.videoDetail
+  val context = LocalContext.current
 
   if (state.isLoading) {
     CircularProgressIndicator(
@@ -124,6 +129,27 @@ fun MovieDetailScreen(
           tmdbId = videoDetail.ids.tmdbId ?: 0,
           videoType = VideoType.Movie,
         )
+      },
+      videos = {
+        state.videos?.let {
+          LazyRow(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp),
+          ) {
+            items(state.videos) {
+              VideoCard(
+                video = it,
+                placeHolderVisible = false,
+                onClick = {
+                  it.link?.let { link ->
+                    context.openUrl(link, isExternal = false)
+                  }
+                },
+              )
+            }
+          }
+        }
       },
       collections = {
         state.collection?.let { collections ->
@@ -174,6 +200,7 @@ private fun MovieDetailContent(
   credits: @Composable () -> Unit,
   similar: @Composable () -> Unit,
   collections: @Composable () -> Unit,
+  videos: @Composable () -> Unit,
   traktHistoryButton: @Composable RowScope.() -> Unit,
 ) {
   var imageHeight by remember { mutableIntStateOf(4000) }
@@ -237,6 +264,11 @@ private fun MovieDetailContent(
       collections()
     }
     item(
+      key = "videos",
+    ) {
+      videos()
+    }
+    item(
       key = "similar",
     ) {
       similar()
@@ -296,6 +328,9 @@ private fun MovieDetailScreenPreview() {
       },
       collections = {
         Text("Collections goes here")
+      },
+      videos = {
+        Text("Videos section")
       },
     )
   }
