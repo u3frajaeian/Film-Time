@@ -1,6 +1,7 @@
 package io.filmtime.data.network
 
 import io.filmtime.data.network.adapter.NetworkResponse
+import io.filmtime.data.network.model.TmdbVideosResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -47,4 +48,9 @@ interface TmdbMoviesService {
   suspend fun getSimilar(
     @Path("movie_id") movieId: Int,
   ): NetworkResponse<TmdbVideoListResponse, TmdbErrorResponse>
+
+  @GET("movie/{movie_id}/videos")
+  suspend fun getMovieVideos(
+    @Path("movie_id") movieId: Int,
+  ): NetworkResponse<TmdbVideosResponse, TmdbErrorResponse>
 }
