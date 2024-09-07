@@ -2,6 +2,7 @@ package io.filmtime.data.api.tmdb
 
 import io.filmtime.data.model.EpisodeThumbnail
 import io.filmtime.data.model.GeneralError
+import io.filmtime.data.model.MovieVideo
 import io.filmtime.data.model.Person
 import io.filmtime.data.model.Result
 import io.filmtime.data.model.VideoDetail
@@ -38,6 +39,8 @@ interface TmdbShowsRemoteSource {
   suspend fun episodesBySeason(showId: Int, seasonNumber: Int): Result<List<EpisodeThumbnail>, GeneralError>
 
   suspend fun getByGenres(page: Int, genresId: List<Long>): Result<List<VideoThumbnail>, GeneralError>
+
+  suspend fun getShowVideos(showId: Int): Result<List<MovieVideo>, GeneralError>
 
   companion object {
     const val PAGE_SIZE = 20 // TMDB API default page size
