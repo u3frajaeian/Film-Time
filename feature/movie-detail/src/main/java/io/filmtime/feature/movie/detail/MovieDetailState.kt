@@ -18,4 +18,5 @@ data class MovieDetailState(
   val streamInfo: StreamInfo? = null,
   val error: UiMessage? = null,
   val videos: List<MovieVideo>? = null,
+  val isTrailersLoading: Boolean = false,
 )

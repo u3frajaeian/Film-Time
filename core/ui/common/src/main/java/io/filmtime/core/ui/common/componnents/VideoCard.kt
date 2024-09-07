@@ -1,14 +1,21 @@
 package io.filmtime.core.ui.common.componnents
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import io.filmtime.core.ui.common.componnents.placeholder.PlaceholderHighlight
@@ -20,16 +27,25 @@ import io.filmtime.data.model.MovieVideo
 fun VideoCard(
   video: MovieVideo,
   placeHolderVisible: Boolean,
-  onClick: (() -> Unit)? = null,
+  onClick: ((String) -> Unit)? = null,
 ) {
   val placeholderHighlight = PlaceholderHighlight.fade()
   Box(
     modifier = Modifier
-      .clickable { onClick?.invoke() },
+      .aspectRatio(16f / 9f)
+      .clip(RoundedCornerShape(8.dp))
+      .then(
+        if (video.link != null && onClick != null) {
+          Modifier.clickable {
+            onClick.invoke(video.link!!)
+          }
+        } else {
+          Modifier
+        },
+      ),
   ) {
     AsyncImage(
       modifier = Modifier
-        .fillMaxWidth()
         .aspectRatio(16f / 9f)
         .placeholder(
           visible = placeHolderVisible,
@@ -40,14 +56,22 @@ fun VideoCard(
       contentScale = ContentScale.Crop,
     )
 
-    Text(
+    Box(
       modifier = Modifier
-        .padding(horizontal = 12.dp)
-        .placeholder(
-          visible = placeHolderVisible,
-          highlight = placeholderHighlight,
-        ),
-      text = video.name,
-    )
+        .align(Alignment.BottomCenter)
+        .fillMaxWidth()
+        .background(Color.Black.copy(alpha = 0.7f))
+        .padding(4.dp),
+    ) {
+      Text(
+        modifier = Modifier
+          .padding(horizontal = 12.dp, vertical = 4.dp),
+        text = video.name,
+        style = MaterialTheme.typography.titleMedium,
+        overflow = TextOverflow.Ellipsis,
+        minLines = 1,
+        maxLines = 3,
+      )
+    }
   }
 }

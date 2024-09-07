@@ -3,7 +3,6 @@ package io.filmtime.feature.movie.detail
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,8 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -37,12 +34,12 @@ import io.filmtime.core.designsystem.theme.FilmTimeTheme
 import io.filmtime.core.designsystem.theme.PreviewFilmTimeTheme
 import io.filmtime.core.designsystem.theme.ThemePreviews
 import io.filmtime.core.ui.common.componnents.ErrorContent
-import io.filmtime.core.ui.common.componnents.VideoCard
 import io.filmtime.core.ui.common.componnents.VideoDescription
 import io.filmtime.core.ui.common.componnents.VideoInfo
 import io.filmtime.core.ui.common.componnents.VideoSectionRow
 import io.filmtime.core.ui.common.componnents.VideoThumbnailInfo
 import io.filmtime.core.ui.common.componnents.VideoThumbnailPoster
+import io.filmtime.core.ui.common.componnents.VideoTrailerRow
 import io.filmtime.data.model.Preview
 import io.filmtime.data.model.PreviewMovie
 import io.filmtime.data.model.Ratings
@@ -73,7 +70,7 @@ fun MovieDetailScreen(
 
   MovieDetailScreen(
     state = state,
-    onRetry = viewModel::loadMovieDetail,
+    onRetry = viewModel::reload,
     onMovieClick = onMovieClick,
     onAddBookmark = viewModel::addBookmark,
     onRemoveBookmark = viewModel::removeBookmark,
@@ -131,24 +128,14 @@ fun MovieDetailScreen(
         )
       },
       videos = {
-        state.videos?.let {
-          LazyRow(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(horizontal = 16.dp),
-          ) {
-            items(state.videos) {
-              VideoCard(
-                video = it,
-                placeHolderVisible = false,
-                onClick = {
-                  it.link?.let { link ->
-                    context.openUrl(link, isExternal = false)
-                  }
-                },
-              )
-            }
-          }
+        state.videos?.let { videos ->
+          VideoTrailerRow(
+            onClick = {
+              context.openUrl(it, isExternal = false)
+            },
+            items = videos,
+            isLoading = state.isTrailersLoading,
+          )
         }
       },
       collections = {
