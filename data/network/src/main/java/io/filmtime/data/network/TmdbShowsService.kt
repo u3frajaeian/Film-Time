@@ -2,6 +2,7 @@ package io.filmtime.data.network
 
 import io.filmtime.data.network.adapter.NetworkResponse
 import io.filmtime.data.network.model.TmdbSeasonResponse
+import io.filmtime.data.network.model.TmdbVideosResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -56,4 +57,9 @@ interface TmdbShowsService {
     @Path("series_id") seriesId: Int,
     @Path("season_number") seasonNumber: Int,
   ): NetworkResponse<TmdbSeasonResponse, TmdbErrorResponse>
+
+  @GET("tv/{series_id}/videos")
+  suspend fun getShowVideos(
+    @Path("series_id") seriesId: Int,
+  ): NetworkResponse<TmdbVideosResponse, TmdbErrorResponse>
 }
