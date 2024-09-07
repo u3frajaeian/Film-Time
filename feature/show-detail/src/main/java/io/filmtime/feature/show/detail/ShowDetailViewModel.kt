@@ -14,6 +14,7 @@ import io.filmtime.domain.bookmarks.DeleteBookmarkUseCase
 import io.filmtime.domain.bookmarks.ObserveBookmarkUseCase
 import io.filmtime.domain.tmdb.shows.GetEpisodesBySeasonUseCase
 import io.filmtime.domain.tmdb.shows.GetShowDetailsUseCase
+import io.filmtime.domain.tmdb.shows.GetShowVideosUseCase
 import io.filmtime.domain.trakt.GetRatingsUseCase
 import io.filmtime.domain.trakt.history.AddEpisodeToHistoryUseCase
 import io.filmtime.domain.trakt.history.IsShowWatchedUseCase
@@ -38,6 +39,7 @@ internal class ShowDetailViewModel @Inject constructor(
   private val isShowWatched: IsShowWatchedUseCase,
   private val addToHistory: AddEpisodeToHistoryUseCase,
   private val removeFromHistory: RemoveEpisodeFromHistoryUseCase,
+  private val getShowVideos: GetShowVideosUseCase,
 ) : ViewModel() {
 
   private val videoId: Int = savedStateHandle["video_id"] ?: throw IllegalStateException("videoId is required")
@@ -47,6 +49,7 @@ internal class ShowDetailViewModel @Inject constructor(
   init {
     observeBookmark()
     load()
+    loadVideos()
   }
 
   fun load() = viewModelScope.launch {
@@ -259,5 +262,23 @@ internal class ShowDetailViewModel @Inject constructor(
         )
       }
     }
+  }
+
+  private fun loadVideos() = viewModelScope.launch {
+    _state.update { state -> state.copy(isTrailersLoading = true) }
+    getShowVideos(videoId)
+      .fold(
+        onSuccess = {
+          _state.update { state ->
+            state.copy(
+              isTrailersLoading = false,
+              videos = it,
+            )
+          }
+        },
+        onFailure = {
+          _state.update { state -> state.copy(isTrailersLoading = false) }
+        },
+      )
   }
 }

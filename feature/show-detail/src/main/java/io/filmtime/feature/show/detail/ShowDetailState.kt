@@ -2,6 +2,7 @@ package io.filmtime.feature.show.detail
 
 import io.filmtime.core.ui.common.UiMessage
 import io.filmtime.data.model.EpisodeThumbnail
+import io.filmtime.data.model.MovieVideo
 import io.filmtime.data.model.Ratings
 import io.filmtime.data.model.VideoDetail
 
@@ -13,6 +14,8 @@ internal data class ShowDetailState(
   val ratings: Ratings? = null,
   val message: String? = null,
   val error: UiMessage? = null,
+  val videos: List<MovieVideo>? = null,
+  val isTrailersLoading: Boolean = false,
 )
 
 internal data class SeasonsState(
