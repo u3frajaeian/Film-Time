@@ -3,6 +3,7 @@ package io.filmtime.data.tmdb.shows
 import androidx.paging.PagingData
 import io.filmtime.data.model.EpisodeThumbnail
 import io.filmtime.data.model.GeneralError
+import io.filmtime.data.model.MovieVideo
 import io.filmtime.data.model.Person
 import io.filmtime.data.model.Result
 import io.filmtime.data.model.VideoDetail
@@ -34,6 +35,8 @@ interface TmdbShowsRepository {
   suspend fun episodesBySeason(showId: Int, seasonNumber: Int): Result<List<EpisodeThumbnail>, GeneralError>
 
   suspend fun getBookmarkedShows(): Flow<List<VideoThumbnail>>
+
+  suspend fun getVideos(showId: Int): Result<List<MovieVideo>, GeneralError>
 }
 
 enum class ShowListType {

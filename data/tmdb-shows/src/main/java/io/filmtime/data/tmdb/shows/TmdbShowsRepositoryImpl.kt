@@ -7,11 +7,13 @@ import io.filmtime.data.api.tmdb.TmdbShowsRemoteSource
 import io.filmtime.data.database.dao.BookmarksDao
 import io.filmtime.data.model.EpisodeThumbnail
 import io.filmtime.data.model.GeneralError
+import io.filmtime.data.model.MovieVideo
 import io.filmtime.data.model.Person
 import io.filmtime.data.model.Result
 import io.filmtime.data.model.Result.Failure
 import io.filmtime.data.model.Result.Success
 import io.filmtime.data.model.VideoDetail
+import io.filmtime.data.model.VideoSource.YouTube
 import io.filmtime.data.model.VideoThumbnail
 import io.filmtime.data.model.VideoType.Show
 import kotlinx.coroutines.flow.Flow
@@ -22,6 +24,11 @@ internal class TmdbShowsRepositoryImpl @Inject constructor(
   private val tmdbShowsRemoteSource: TmdbShowsRemoteSource,
   private val bookmarksDao: BookmarksDao,
 ) : TmdbShowsRepository {
+
+  companion object {
+    const val YOUTUBE_WATCH_PAGE = "https://youtube.com/watch?v="
+    const val YOUTUBE_THUMBNAIL_URL = "https://img.youtube.com/vi/{id}/hqdefault.jpg"
+  }
 
   override suspend fun showDetails(showId: Int): Result<VideoDetail, GeneralError> =
     tmdbShowsRemoteSource.showDetails(showId)
@@ -90,6 +97,24 @@ internal class TmdbShowsRepositoryImpl @Inject constructor(
         }
       }
       showsList
+    }
+  }
+
+  override suspend fun getVideos(showId: Int): Result<List<MovieVideo>, GeneralError> {
+    val result = tmdbShowsRemoteSource.getShowVideos(showId)
+
+    return result.mapSuccess { data ->
+      data.map {
+        val source = when (it.source) {
+          YouTube -> YOUTUBE_WATCH_PAGE + it.key
+          null -> null
+        }
+        val poster = when (it.source) {
+          YouTube -> YOUTUBE_THUMBNAIL_URL.replace("{id}", it.key)
+          null -> null
+        }
+        it.copy(link = source, posterUrl = poster)
+      }
     }
   }
 }
