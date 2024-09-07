@@ -1,6 +1,5 @@
 package io.filmtime.feature.movie.detail
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -50,7 +49,12 @@ class MovieDetailViewModel @Inject constructor(
     loadVideos()
   }
 
-  fun loadMovieDetail() = viewModelScope.launch {
+  fun reload() {
+    loadMovieDetail()
+    loadVideos()
+  }
+
+  private fun loadMovieDetail() = viewModelScope.launch {
     _state.value = _state.value.copy(isLoading = true, error = null)
 
     getMovieDetail(videoId)
@@ -129,17 +133,19 @@ class MovieDetailViewModel @Inject constructor(
   }
 
   private fun loadVideos() = viewModelScope.launch {
+    _state.update { state -> state.copy(isTrailersLoading = true) }
     getMovieVideos(videoId)
       .fold(
         onSuccess = {
           _state.update { state ->
             state.copy(
               videos = it,
+              isTrailersLoading = false,
             )
           }
         },
         onFailure = {
-          Log.d(this@MovieDetailViewModel.toString(), it.toString())
+          _state.update { state -> state.copy(isTrailersLoading = false) }
         },
       )
   }
