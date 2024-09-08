@@ -4,20 +4,26 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import io.filmtime.data.api.tmdb.TmdbMoviesRemoteSource
+import io.filmtime.data.database.dao.BookmarksDao
 import io.filmtime.data.database.dao.MovieDetailDao
 import io.filmtime.data.model.GeneralError
 import io.filmtime.data.model.MovieCollection
 import io.filmtime.data.model.Person
 import io.filmtime.data.model.Result
+import io.filmtime.data.model.Result.Failure
+import io.filmtime.data.model.Result.Success
 import io.filmtime.data.model.VideoDetail
 import io.filmtime.data.model.VideoThumbnail
+import io.filmtime.data.model.VideoType.Movie
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 internal class TmdbMovieRepositoryImpl @Inject constructor(
   private val tmdbMoviesRemoteSource: TmdbMoviesRemoteSource,
   private val movieDao: MovieDetailDao,
+  private val bookmarksDao: BookmarksDao,
 ) : TmdbMovieRepository {
 
   override suspend fun getMovieDetails(movieId: Int): Flow<Result<VideoDetail, GeneralError>> = flow {
@@ -94,4 +100,17 @@ internal class TmdbMovieRepositoryImpl @Inject constructor(
 
   override suspend fun getCollection(collectionId: Int): Result<MovieCollection, GeneralError> =
     tmdbMoviesRemoteSource.getCollection(collectionId)
+
+  override suspend fun getBookmarkedMovies(): Flow<List<VideoThumbnail>> {
+    return bookmarksDao.getAllBookmarksByType(Movie).map { bookmarks ->
+      val movieList: MutableList<VideoThumbnail> = mutableListOf()
+      for (id in bookmarks) {
+        when (val result = fetchMovieDetailsFromNetwork(id.tmdbId)) {
+          is Failure -> continue
+          is Success -> movieList.add(result.data.toVideoThumbnail())
+        }
+      }
+      movieList
+    }
+  }
 }

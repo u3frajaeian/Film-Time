@@ -6,6 +6,8 @@ import io.filmtime.data.model.VideoThumbnail
 internal data class HomeUiState(
   val isLoading: Boolean,
   val videoSections: List<VideoSection> = emptyList(),
+  val bookmarkedMovies: VideoSection? = null,
+  val bookmarkedShows: VideoSection? = null,
   val error: UiMessage? = null,
 )
 
@@ -18,4 +20,5 @@ internal data class VideoSection(
 internal enum class SectionType {
   TrendingMovies,
   TrendingShows,
+  None,
 }
