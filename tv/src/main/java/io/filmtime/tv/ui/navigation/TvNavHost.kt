@@ -15,7 +15,8 @@ import io.filmtime.tv.ui.settings.settingsGraph
 fun TvNavHost(
   modifier: Modifier = Modifier,
   navController: NavHostController,
-  onTopBarVisibleChange: (Boolean) -> Unit,
+  onHideTabBar: () -> Unit,
+  onShowTabBar: () -> Unit,
 ) {
   NavHost(
     navController = navController,
@@ -23,7 +24,13 @@ fun TvNavHost(
     modifier = modifier,
   ) {
     homeGraph(
-      onTopBarVisibleChange = onTopBarVisibleChange,
+      onFirstItemVisibleChange = { isVisible ->
+        if (isVisible) {
+          onShowTabBar()
+        } else {
+          onHideTabBar()
+        }
+      },
     )
     moviesGraph()
     searchGraph()
