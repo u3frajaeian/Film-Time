@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import io.filmtime.tv.ui.detail.movie.navigateToMovieDetail
 import io.filmtime.tv.ui.home.HomeGraph
 import io.filmtime.tv.ui.home.homeGraph
 import io.filmtime.tv.ui.movies.moviesGraph
@@ -30,6 +31,10 @@ fun TvNavHost(
         } else {
           onHideTabBar()
         }
+      },
+      onNavigateToMovieDetail = {
+        onHideTabBar()
+        navController.navigateToMovieDetail(it)
       },
     )
     moviesGraph()
