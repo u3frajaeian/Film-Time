@@ -3,6 +3,7 @@ package io.filmtime.tv.ui.home
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
@@ -36,28 +37,36 @@ fun HomeScreen(
   LaunchedEffect(shouldShowTopBar) {
     onTopBarVisibleChange(shouldShowTopBar)
   }
+  HomeScreenContent(
+    homeUiState = uiState,
+    onReload = viewModel::reload,
+    lazyListState = lazyColumnState,
+  )
+}
 
+@Composable
+fun HomeScreenContent(
+  sectionsCount: Int = 2,
+  homeUiState: HomeUiState,
+  onReload: () -> Unit,
+  lazyListState: LazyListState = rememberLazyListState(),
+) {
   when {
-    uiState.isLoading -> {
-      LoadingVideoSectionRow(numberOfSections = 2)
-    }
-
-    uiState.error != null -> {
-      uiState.error?.let {
-        ErrorScreen(
-          message = it,
-          actionTitle = stringResource(R.string.btn_retry),
-          onActionClick = viewModel::reload,
-          modifier = Modifier.fillMaxSize(),
-        )
-      }
+    homeUiState.isLoading -> LoadingVideoSectionRow(numberOfSections = sectionsCount)
+    homeUiState.error != null -> {
+      ErrorScreen(
+        message = homeUiState.error,
+        actionTitle = stringResource(R.string.btn_retry),
+        onActionClick = onReload,
+        modifier = Modifier.fillMaxSize(),
+      )
     }
 
     else -> LazyColumn(
-      state = lazyColumnState,
+      state = lazyListState,
       contentPadding = PaddingValues(bottom = 150.dp),
     ) {
-      items(uiState.videoSections) {
+      items(homeUiState.videoSections) {
         MoviesRow(
           thumbnails = it.items,
           title = it.title,
