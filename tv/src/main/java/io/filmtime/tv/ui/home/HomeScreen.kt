@@ -58,7 +58,10 @@ fun HomeScreen(
       contentPadding = PaddingValues(bottom = 150.dp),
     ) {
       items(uiState.videoSections) {
-        MoviesRow(thumbnails = it.items, title = it.title)
+        MoviesRow(
+          thumbnails = it.items,
+          title = it.title,
+        )
       }
     }
   }

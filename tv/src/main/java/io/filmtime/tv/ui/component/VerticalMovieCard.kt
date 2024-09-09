@@ -32,7 +32,10 @@ import coil.compose.AsyncImage
 import io.filmtime.data.model.VideoThumbnail
 
 @Composable
-fun VerticalMovieCard(modifier: Modifier = Modifier, videoThumbnail: VideoThumbnail) {
+fun VerticalMovieCard(
+  modifier: Modifier = Modifier,
+  videoThumbnail: VideoThumbnail,
+) {
   var isFocused by remember {
     mutableStateOf(false)
   }
