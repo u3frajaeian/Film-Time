@@ -32,7 +32,10 @@ fun TabBar(
   var focusedTabIndex by remember {
     mutableIntStateOf(0)
   }
-  Box(modifier = modifier, contentAlignment = Alignment.Center) {
+  Box(
+    modifier = modifier,
+    contentAlignment = Alignment.Center,
+  ) {
     TabRow(
       selectedTabIndex = TabItem.entries.indexOf(selectedTabItem),
       modifier = Modifier.focusGroup(),
@@ -49,7 +52,12 @@ fun TabBar(
           Row(
             modifier = Modifier
               .height(32.dp)
-              .padding(start = 12.dp, end = 16.dp, top = 6.dp, bottom = 6.dp),
+              .padding(
+                start = 12.dp,
+                end = 16.dp,
+                top = 6.dp,
+                bottom = 6.dp,
+              ),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
           ) {

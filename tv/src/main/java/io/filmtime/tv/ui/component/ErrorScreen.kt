@@ -25,7 +25,10 @@ fun ErrorScreen(
     horizontalAlignment = Alignment.CenterHorizontally,
     verticalArrangement = Arrangement.Center,
   ) {
-    Text(text = message.string(), color = MaterialTheme.colorScheme.error)
+    Text(
+      text = message.string(),
+      color = MaterialTheme.colorScheme.error,
+    )
     Spacer(modifier = Modifier.height(12.dp))
     Button(onClick = onActionClick) {
       Text(text = actionTitle)

@@ -8,7 +8,10 @@ import androidx.tv.material3.Text
 
 @Composable
 fun SearchScreen(modifier: Modifier = Modifier) {
-  Box(modifier = modifier, contentAlignment = Alignment.Center) {
+  Box(
+    modifier = modifier,
+    contentAlignment = Alignment.Center,
+  ) {
     Text(text = "Search Screen")
   }
 }

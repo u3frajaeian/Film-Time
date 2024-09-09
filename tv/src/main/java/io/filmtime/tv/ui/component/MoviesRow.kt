@@ -38,7 +38,10 @@ fun MoviesRow(
         fontWeight = FontWeight.Medium,
         fontSize = 30.sp,
       ),
-      modifier = Modifier.padding(horizontal = 60.dp, vertical = 20.dp),
+      modifier = Modifier.padding(
+        horizontal = 60.dp,
+        vertical = 20.dp,
+      ),
     )
     LazyRow(
       modifier = Modifier
@@ -49,7 +52,10 @@ fun MoviesRow(
       ),
       horizontalArrangement = Arrangement.spacedBy(20.dp),
     ) {
-      itemsIndexed(thumbnails, key = { _, video -> video.posterUrl }) { index, item ->
+      itemsIndexed(
+        thumbnails,
+        key = { _, video -> video.posterUrl },
+      ) { index, item ->
         val itemModifier = if (index == 0) {
           Modifier.focusRequester(firstItem)
         } else {
