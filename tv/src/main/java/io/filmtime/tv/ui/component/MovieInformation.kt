@@ -33,7 +33,10 @@ fun MovieInformation(
     Text(
       text = stringResource(R.string.information),
       style = MaterialTheme.typography.titleLarge,
-      modifier = Modifier.padding(start = 50.dp, bottom = 20.dp),
+      modifier = Modifier.padding(
+        start = 50.dp,
+        bottom = 20.dp,
+      ),
     )
     Row(
       modifier = Modifier.fillMaxWidth(),
@@ -58,7 +61,10 @@ fun MovieInformation(
         }
       }
       Column {
-        InfoItem(title = stringResource(R.string.release_date), value = videoDetail.releaseDate)
+        InfoItem(
+          title = stringResource(R.string.release_date),
+          value = videoDetail.releaseDate,
+        )
         Spacer(modifier = Modifier.height(10.dp))
         ratings?.let {
           InfoItem(
@@ -129,6 +135,9 @@ private fun InfoItem(
       style = MaterialTheme.typography.titleMedium,
     )
     Spacer(modifier = Modifier.height(10.dp))
-    Text(text = value, style = MaterialTheme.typography.bodyMedium)
+    Text(
+      text = value,
+      style = MaterialTheme.typography.bodyMedium,
+    )
   }
 }

@@ -33,11 +33,20 @@ fun TvBookmarkButton(
       }
     },
     content = {
-      AnimatedContent(targetState = isBookmark, label = "") { isBookmarkState ->
+      AnimatedContent(
+        targetState = isBookmark,
+        label = "",
+      ) { isBookmarkState ->
         if (isBookmarkState) {
-          Icon(imageVector = Rounded.Bookmark, contentDescription = "")
+          Icon(
+            imageVector = Rounded.Bookmark,
+            contentDescription = stringResource(R.string.cd_bookmarked_icon),
+          )
         } else {
-          Icon(imageVector = Rounded.BookmarkBorder, contentDescription = "")
+          Icon(
+            imageVector = Rounded.BookmarkBorder,
+            contentDescription = stringResource(R.string.cd_bookmark_icon),
+          )
         }
       }
       Text(

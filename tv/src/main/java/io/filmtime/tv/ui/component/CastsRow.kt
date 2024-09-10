@@ -64,7 +64,11 @@ fun CastsRow(
         } else {
           Modifier
         }
-        CastItem(item = item, modifier = itemModifier.width(100.dp), onClick = { onPersonClick(item) })
+        CastItem(
+          item = item,
+          modifier = itemModifier.width(100.dp),
+          onClick = { onPersonClick(item) },
+        )
       }
     }
   }

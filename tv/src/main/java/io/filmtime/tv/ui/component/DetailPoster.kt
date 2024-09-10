@@ -19,8 +19,7 @@ fun DetailPoster(
   scrimColor: Color = MaterialTheme.colorScheme.surface,
 ) {
   AsyncImage(
-    model =
-    ImageRequest.Builder(LocalContext.current)
+    model = ImageRequest.Builder(LocalContext.current)
       .data(coverUrl).crossfade(true).build(),
     contentDescription = "Poster Image",
     contentScale = ContentScale.Crop,
