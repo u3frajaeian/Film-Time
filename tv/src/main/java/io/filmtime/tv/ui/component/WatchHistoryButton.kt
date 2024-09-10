@@ -18,6 +18,7 @@ import androidx.tv.material3.Text
 import androidx.tv.material3.WideButtonDefaults
 import io.filmtime.data.model.VideoType
 import io.filmtime.tv.R
+import io.filmtime.tv.ui.traktbutton.TraktAddRemoveUiState
 import io.filmtime.tv.ui.traktbutton.TraktMovieHistoryViewModel
 
 @Composable
@@ -31,15 +32,30 @@ fun WatchHistoryButton(
   LaunchedEffect(videoType, tmdbId) {
     viewModel.checkIfIsWatched(videoType, tmdbId)
   }
+  WatchHistoryButtonContent(
+    modifier = modifier,
+    uiState = uiState,
+    onRemove = viewModel::removeItemFromHistory,
+    onAdd = viewModel::addItemToHistory,
+  )
+}
+
+@Composable
+fun WatchHistoryButtonContent(
+  modifier: Modifier = Modifier,
+  uiState: TraktAddRemoveUiState,
+  onRemove: () -> Unit,
+  onAdd: () -> Unit,
+) {
   Button(
     shape = WideButtonDefaults.shape(),
     modifier = modifier,
     enabled = !uiState.isError,
     onClick = {
       if (uiState.isWatched) {
-        viewModel.removeItemFromHistory()
+        onRemove()
       } else {
-        viewModel.addItemToHistory()
+        onAdd()
       }
     },
     content = {
