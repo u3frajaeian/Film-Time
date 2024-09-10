@@ -51,9 +51,15 @@ fun WatchHistoryButton(
           label = "",
         ) { isWatchedState ->
           if (isWatchedState) {
-            Icon(imageVector = Rounded.PlaylistRemove, contentDescription = "")
+            Icon(
+              imageVector = Rounded.PlaylistRemove,
+              contentDescription = stringResource(R.string.cd_unwatched_icon),
+            )
           } else {
-            Icon(imageVector = AutoMirrored.Rounded.PlaylistAdd, contentDescription = "")
+            Icon(
+              imageVector = AutoMirrored.Rounded.PlaylistAdd,
+              contentDescription = stringResource(R.string.cd_watched_icon),
+            )
           }
         }
         Text(

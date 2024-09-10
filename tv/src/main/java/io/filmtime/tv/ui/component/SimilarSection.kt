@@ -20,7 +20,10 @@ fun SimilarSection(
   val uiState by viewModel.state.collectAsStateWithLifecycle()
 
   LaunchedEffect(Unit) {
-    viewModel.loadSimilar(videoId = tmdbId, videoType = type)
+    viewModel.loadSimilar(
+      videoId = tmdbId,
+      videoType = type,
+    )
   }
   MoviesRow(
     thumbnails = uiState.videoItems,

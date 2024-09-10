@@ -95,7 +95,11 @@ fun VerticalMovieCard(
               Text(
                 modifier = Modifier
                   .align(Alignment.BottomCenter)
-                  .padding(bottom = 16.dp, start = 12.dp, end = 12.dp),
+                  .padding(
+                    bottom = 16.dp,
+                    start = 12.dp,
+                    end = 12.dp,
+                  ),
                 text = videoThumbnail.title,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = MaterialTheme.typography.titleMedium,

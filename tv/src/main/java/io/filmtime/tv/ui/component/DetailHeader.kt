@@ -51,7 +51,10 @@ fun DetailHeader(
       color = MaterialTheme.colorScheme.onSurface,
     )
     Row(
-      horizontalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.CenterHorizontally),
+      horizontalArrangement = Arrangement.spacedBy(
+        space = 8.dp,
+        alignment = Alignment.CenterHorizontally,
+      ),
     ) {
       TextsRowWithSeparator(
         texts = listOf(
@@ -122,7 +125,10 @@ private fun ActionButtons(
   primaryButton: @Composable () -> Unit,
   secondary: @Composable () -> Unit,
 ) {
-  Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(10.dp)) {
+  Column(
+    modifier = modifier,
+    verticalArrangement = Arrangement.spacedBy(10.dp),
+  ) {
     primaryButton()
     secondary()
   }

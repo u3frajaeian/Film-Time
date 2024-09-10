@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -23,6 +24,7 @@ import androidx.tv.material3.Surface
 import androidx.tv.material3.Text
 import coil.compose.AsyncImage
 import io.filmtime.data.model.Person
+import io.filmtime.tv.R
 
 @Composable
 fun CastItem(
@@ -37,7 +39,13 @@ fun CastItem(
         onClick = onClick,
         shape = ClickableSurfaceDefaults.shape(CircleShape),
         border = ClickableSurfaceDefaults.border(
-          focusedBorder = Border(BorderStroke(3.dp, MaterialTheme.colorScheme.onSurface), inset = 6.dp),
+          focusedBorder = Border(
+            BorderStroke(
+              3.dp,
+              MaterialTheme.colorScheme.onSurface,
+            ),
+            inset = 6.dp,
+          ),
         ),
       ) {
         AsyncImage(
@@ -47,13 +55,16 @@ fun CastItem(
             .clip(CircleShape),
           contentScale = ContentScale.Crop,
           model = item.imageUrl,
-          contentDescription = "credit_profile",
+          contentDescription = stringResource(R.string.cd_cast_profile),
         )
       }
     },
     title = {
       Column(
-        verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
+        verticalArrangement = Arrangement.spacedBy(
+          4.dp,
+          Alignment.CenterVertically,
+        ),
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(top = 20.dp),
       ) {

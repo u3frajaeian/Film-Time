@@ -34,7 +34,10 @@ fun MoviesRow(
     Text(
       text = title,
       style = MaterialTheme.typography.titleLarge,
-      modifier = Modifier.padding(horizontal = 60.dp, vertical = 20.dp),
+      modifier = Modifier.padding(
+        horizontal = 60.dp,
+        vertical = 20.dp,
+      ),
     )
     LazyRow(
       modifier = Modifier
