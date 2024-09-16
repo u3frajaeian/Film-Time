@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -70,6 +71,7 @@ internal fun CreditsRow(
       style = MaterialTheme.typography.titleMedium,
       text = stringResource(R.string.core_ui_cast_crew),
     )
+    val lazyListState = rememberLazyListState()
     if (isLoading) {
       CircularProgressIndicator(
         modifier = Modifier
@@ -88,6 +90,7 @@ internal fun CreditsRow(
           .fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(horizontal = 16.dp),
+        state = lazyListState,
       ) {
         items(credits) { item ->
           PeopleInCreditsRow(item = item)
