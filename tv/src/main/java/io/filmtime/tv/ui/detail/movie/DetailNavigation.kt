@@ -8,7 +8,7 @@ import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 
 @Serializable
-private data class MovieDetail(val video_id: Int)
+data class MovieDetail(val videoId: Int)
 
 fun NavGraphBuilder.movieDetailDestination() {
   composable<MovieDetail> {

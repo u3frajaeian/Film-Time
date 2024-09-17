@@ -3,6 +3,7 @@ package io.filmtime.tv.ui.detail.movie
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.filmtime.core.ui.common.toUiMessage
 import io.filmtime.data.model.VideoType.Movie
@@ -34,7 +35,7 @@ class MovieDetailViewModel @Inject constructor(
   private val getCollection: GetMovieCollectionUseCase,
 ) : ViewModel() {
 
-  private val videoId: Int = savedStateHandle["video_id"] ?: throw IllegalStateException("videoId is required")
+  private val videoId: Int = savedStateHandle.toRoute<MovieDetail>().videoId
 
   private val _state = MutableStateFlow(MovieDetailState())
   val state = _state.asStateFlow()
