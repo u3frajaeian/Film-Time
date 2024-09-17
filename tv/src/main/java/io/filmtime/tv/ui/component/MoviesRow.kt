@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
 import io.filmtime.data.model.VideoThumbnail
+import io.filmtime.data.model.VideoType
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -26,7 +27,7 @@ fun MoviesRow(
   modifier: Modifier = Modifier,
   thumbnails: List<VideoThumbnail>,
   title: String,
-  onClick: (tmdbId: Int) -> Unit = {},
+  onClick: (tmdbId: Int, type: VideoType) -> Unit = { _, _ -> },
 ) {
   val (lazyRow, firstItem) = remember { FocusRequester.createRefs() }
 
@@ -60,7 +61,7 @@ fun MoviesRow(
         VerticalMovieCard(
           videoThumbnail = item,
           modifier = itemModifier.width(150.dp),
-          onClick = { item.ids.tmdbId?.let { onClick(it) } },
+          onClick = { item.ids.tmdbId?.let { onClick(it, item.type) } },
         )
       }
     }

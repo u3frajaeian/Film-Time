@@ -14,7 +14,7 @@ import io.filmtime.tv.ui.similar.SimilarViewModel
 fun SimilarSection(
   type: VideoType = VideoType.Movie,
   tmdbId: Int,
-  onMovieClick: (Int) -> Unit = {},
+  onMovieClick: (tmdbId: Int, type: VideoType) -> Unit = { _, _ -> },
 ) {
   val viewModel: SimilarViewModel = hiltViewModel()
   val uiState by viewModel.state.collectAsStateWithLifecycle()
