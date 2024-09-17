@@ -88,7 +88,6 @@ fun FilmTimeTvApp() {
     modifier = Modifier.offset {
       IntOffset(0, navHostYOffset)
     },
-    onHideTabBar = { isTopBarVisible = false },
-    onShowTabBar = { isTopBarVisible = true },
+    onTabBarVisibleChange = { isTopBarVisible = it },
   )
 }
