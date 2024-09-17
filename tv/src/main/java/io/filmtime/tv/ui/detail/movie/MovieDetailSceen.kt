@@ -87,12 +87,12 @@ private fun MovieDetailContent(
         contentPadding = PaddingValues(vertical = 100.dp),
         verticalArrangement = Arrangement.spacedBy(25.dp),
       ) {
-        item { headerContent(detail) }
+        item(key = "Header") { headerContent(detail) }
         detail.ids.tmdbId?.let {
-          item { castsContent(it) }
-          item { similarContent(it) }
+          item(key = "Casts") { castsContent(it) }
+          item(key = "Similar") { similarContent(it) }
         }
-        item { informationContent(detail) }
+        item(key = "Info") { informationContent(detail) }
       }
     }
   }
