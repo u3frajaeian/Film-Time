@@ -3,6 +3,8 @@ package io.filmtime.tv.ui.home
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import io.filmtime.data.model.VideoType
+import io.filmtime.tv.ui.detail.movie.movieDetailDestination
 import io.filmtime.tv.ui.navigation.TabDestination.HomeScreen
 import kotlinx.serialization.Serializable
 
@@ -10,15 +12,18 @@ import kotlinx.serialization.Serializable
 data object HomeGraph
 
 fun NavGraphBuilder.homeGraph(
-  onTopBarVisibleChange: (Boolean) -> Unit,
+  onFirstItemVisibleChange: (isVisible: Boolean) -> Unit,
+  onThumbnailClick: (tmdbId: Int, type: VideoType) -> Unit = { _, _ -> },
 ) {
   navigation<HomeGraph>(
     startDestination = HomeScreen,
   ) {
     composable<HomeScreen> {
       HomeScreen(
-        onTopBarVisibleChange = onTopBarVisibleChange,
+        onFirstItemVisibleChange = onFirstItemVisibleChange,
+        onThumbnailClick = onThumbnailClick,
       )
     }
+    movieDetailDestination()
   }
 }

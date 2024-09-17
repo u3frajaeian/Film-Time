@@ -17,30 +17,32 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.filmtime.core.ui.common.componnents.LoadingVideoSectionRow
+import io.filmtime.data.model.VideoType
 import io.filmtime.tv.R
 import io.filmtime.tv.ui.component.ErrorScreen
 import io.filmtime.tv.ui.component.MoviesRow
 
 @Composable
 fun HomeScreen(
-  onTopBarVisibleChange: (Boolean) -> Unit,
+  onFirstItemVisibleChange: (isVisible: Boolean) -> Unit,
+  onThumbnailClick: (tmdbId: Int, type: VideoType) -> Unit,
 ) {
   val viewModel: HomeViewModel = hiltViewModel()
   val uiState by viewModel.state.collectAsStateWithLifecycle()
   val lazyColumnState = rememberLazyListState()
-  val shouldShowTopBar by remember {
+  val isTopOfList by remember {
     derivedStateOf {
-      lazyColumnState.firstVisibleItemIndex == 0 &&
-        lazyColumnState.firstVisibleItemScrollOffset == 0
+      lazyColumnState.firstVisibleItemIndex == 0 && lazyColumnState.firstVisibleItemScrollOffset == 0
     }
   }
-  LaunchedEffect(shouldShowTopBar) {
-    onTopBarVisibleChange(shouldShowTopBar)
+  LaunchedEffect(isTopOfList) {
+    onFirstItemVisibleChange(isTopOfList)
   }
   HomeScreenContent(
     homeUiState = uiState,
     onReload = viewModel::reload,
     lazyListState = lazyColumnState,
+    onThumbnailClick = onThumbnailClick,
   )
 }
 
@@ -50,6 +52,7 @@ fun HomeScreenContent(
   homeUiState: HomeUiState,
   onReload: () -> Unit,
   lazyListState: LazyListState = rememberLazyListState(),
+  onThumbnailClick: (tmdbId: Int, type: VideoType) -> Unit = { _, _ -> },
 ) {
   when {
     homeUiState.isLoading -> LoadingVideoSectionRow(numberOfSections = sectionsCount)
@@ -70,6 +73,7 @@ fun HomeScreenContent(
         MoviesRow(
           thumbnails = it.items,
           title = it.title,
+          onClick = onThumbnailClick,
         )
       }
     }
