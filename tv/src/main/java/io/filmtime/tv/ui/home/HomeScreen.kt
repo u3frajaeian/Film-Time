@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.filmtime.core.ui.common.componnents.LoadingVideoSectionRow
+import io.filmtime.data.model.VideoType
 import io.filmtime.tv.R
 import io.filmtime.tv.ui.component.ErrorScreen
 import io.filmtime.tv.ui.component.MoviesRow
@@ -24,7 +25,7 @@ import io.filmtime.tv.ui.component.MoviesRow
 @Composable
 fun HomeScreen(
   onFirstItemVisibleChange: (isVisible: Boolean) -> Unit,
-  onNavigateToMovieDetail: (tmdbId: Int) -> Unit,
+  onThumbnailClick: (tmdbId: Int, type: VideoType) -> Unit,
 ) {
   val viewModel: HomeViewModel = hiltViewModel()
   val uiState by viewModel.state.collectAsStateWithLifecycle()
@@ -41,7 +42,7 @@ fun HomeScreen(
     homeUiState = uiState,
     onReload = viewModel::reload,
     lazyListState = lazyColumnState,
-    onNavigateToMovieDetail = onNavigateToMovieDetail,
+    onThumbnailClick = onThumbnailClick,
   )
 }
 
@@ -51,7 +52,7 @@ fun HomeScreenContent(
   homeUiState: HomeUiState,
   onReload: () -> Unit,
   lazyListState: LazyListState = rememberLazyListState(),
-  onNavigateToMovieDetail: (tmdbId: Int) -> Unit = {},
+  onThumbnailClick: (tmdbId: Int, type: VideoType) -> Unit = { _, _ -> },
 ) {
   when {
     homeUiState.isLoading -> LoadingVideoSectionRow(numberOfSections = sectionsCount)
@@ -72,7 +73,7 @@ fun HomeScreenContent(
         MoviesRow(
           thumbnails = it.items,
           title = it.title,
-          onClick = onNavigateToMovieDetail,
+          onClick = onThumbnailClick,
         )
       }
     }

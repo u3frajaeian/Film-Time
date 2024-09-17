@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import io.filmtime.data.model.VideoType.Movie
+import io.filmtime.data.model.VideoType.Show
 import io.filmtime.tv.ui.detail.movie.navigateToMovieDetail
 import io.filmtime.tv.ui.home.HomeGraph
 import io.filmtime.tv.ui.home.homeGraph
@@ -25,9 +27,16 @@ fun TvNavHost(
   ) {
     homeGraph(
       onFirstItemVisibleChange = onTabBarVisibleChange,
-      onNavigateToMovieDetail = {
-        onTabBarVisibleChange(false)
-        navController.navigateToMovieDetail(it)
+      onThumbnailClick = { tmdbId, type ->
+        when (type) {
+          Movie -> {
+            navController.navigateToMovieDetail(tmdbId)
+            onTabBarVisibleChange(false)
+          }
+
+          Show -> { // TODO: #125 implement the navigation into show detail screen }
+          }
+        }
       },
     )
     moviesGraph()
