@@ -12,6 +12,7 @@ import io.filmtime.data.network.TmdbErrorResponse
 import io.filmtime.data.network.TmdbShowListResponse
 import io.filmtime.data.network.TmdbShowsService
 import io.filmtime.data.network.adapter.NetworkResponse
+import io.filmtime.data.network.model.Type.Trailer
 import javax.inject.Inject
 
 class TmdbShowsRemoteSourceImpl @Inject constructor(
@@ -136,8 +137,13 @@ class TmdbShowsRemoteSourceImpl @Inject constructor(
         val body = result.body
         if (body == null) {
           Result.Failure(GeneralError.UnknownError(Throwable("Videos is null")))
+        } else {
+          Result.Success(
+            body.results
+              .filter { it.official && it.type == Trailer }
+              .map { it.toVideos() },
+          )
         }
-        Result.Success(body!!.results.map { it.toVideos() })
       }
     }
 
