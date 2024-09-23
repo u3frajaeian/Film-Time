@@ -1,27 +1,22 @@
 package io.filmtime.core.ui.common.componnents
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import io.filmtime.core.designsystem.theme.PreviewFilmTimeTheme
+import io.filmtime.core.designsystem.theme.ThemePreviews
 import io.filmtime.core.ui.common.componnents.placeholder.PlaceholderHighlight
 import io.filmtime.core.ui.common.componnents.placeholder.fade
 import io.filmtime.core.ui.common.componnents.placeholder.placeholder
 import io.filmtime.data.model.MovieVideo
+import io.filmtime.data.model.VideoSource.YouTube
 
 @Composable
 fun VideoCard(
@@ -55,23 +50,22 @@ fun VideoCard(
       contentDescription = video.link,
       contentScale = ContentScale.Crop,
     )
+  }
+}
 
-    Box(
-      modifier = Modifier
-        .align(Alignment.BottomCenter)
-        .fillMaxWidth()
-        .background(Color.Black.copy(alpha = 0.7f))
-        .padding(4.dp),
-    ) {
-      Text(
-        modifier = Modifier
-          .padding(horizontal = 12.dp, vertical = 4.dp),
-        text = video.name,
-        style = MaterialTheme.typography.titleMedium,
-        overflow = TextOverflow.Ellipsis,
-        minLines = 1,
-        maxLines = 3,
-      )
-    }
+@ThemePreviews
+@Composable
+private fun PreviewVideoCard() {
+  PreviewFilmTimeTheme {
+    VideoCard(
+      video = MovieVideo(
+        name = "The Batman",
+        posterUrl = "https://image.tmdb.org/t/p/w500/5VJSIAhSn4qUq3FjV3j6Uz5Zc4c.jpg",
+        link = "https://www.youtube.com/watch?v=IhYDiZ0fF5Y",
+        source = YouTube,
+        key = "",
+      ),
+      placeHolderVisible = false,
+    )
   }
 }
