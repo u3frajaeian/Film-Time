@@ -8,6 +8,7 @@ import io.filmtime.domain.tmdb.movies.GetBookmarkedMoviesUseCase
 import io.filmtime.domain.tmdb.movies.GetMovieCollectionUseCase
 import io.filmtime.domain.tmdb.movies.GetMovieCreditsUseCase
 import io.filmtime.domain.tmdb.movies.GetMovieDetailsUseCase
+import io.filmtime.domain.tmdb.movies.GetMovieVideosUseCase
 import io.filmtime.domain.tmdb.movies.GetMoviesByGenreUseCase
 import io.filmtime.domain.tmdb.movies.GetMoviesListUseCase
 import io.filmtime.domain.tmdb.movies.GetSimilarMoviesUseCase
@@ -16,6 +17,7 @@ import io.filmtime.domain.tmdb.movies.impl.GetBookmarkedMoviesUseCaseImpl
 import io.filmtime.domain.tmdb.movies.impl.GetMovieCollectionUseCaseImpl
 import io.filmtime.domain.tmdb.movies.impl.GetMovieCreditsUseCaseImpl
 import io.filmtime.domain.tmdb.movies.impl.GetMovieDetailsUseCaseImpl
+import io.filmtime.domain.tmdb.movies.impl.GetMovieVideosUseCaseImpl
 import io.filmtime.domain.tmdb.movies.impl.GetMoviesByGenreUseCaseImpl
 import io.filmtime.domain.tmdb.movies.impl.GetMoviesListUseCaseImpl
 import io.filmtime.domain.tmdb.movies.impl.GetSimilarMoviesUseCaseImpl
@@ -48,4 +50,7 @@ internal abstract class TmdbMoviesUseCaseModule {
 
   @Binds
   abstract fun bindGetBookmarkedMoviesUseCase(impl: GetBookmarkedMoviesUseCaseImpl): GetBookmarkedMoviesUseCase
+
+  @Binds
+  abstract fun bindGetMovieVideosUseCase(impl: GetMovieVideosUseCaseImpl): GetMovieVideosUseCase
 }

@@ -35,6 +35,7 @@ import io.filmtime.core.ui.common.componnents.VideoDescription
 import io.filmtime.core.ui.common.componnents.VideoInfo
 import io.filmtime.core.ui.common.componnents.VideoThumbnailInfo
 import io.filmtime.core.ui.common.componnents.VideoThumbnailPoster
+import io.filmtime.core.ui.common.componnents.VideoTrailerRow
 import io.filmtime.data.model.EpisodeThumbnail
 import io.filmtime.data.model.Preview
 import io.filmtime.data.model.PreviewShow
@@ -86,6 +87,7 @@ private fun ShowDetailScreen(
   removeFromHistory: (EpisodeThumbnail) -> Unit,
 ) {
   val videoDetail = state.videoDetail
+  val context = LocalContext.current
 
   if (state.isLoading) {
     CircularProgressIndicator(
@@ -133,6 +135,17 @@ private fun ShowDetailScreen(
           onVideoClick = onShowClick,
         )
       },
+      videos = {
+        state.videos?.let { videos ->
+          VideoTrailerRow(
+            items = videos,
+            isLoading = state.isTrailersLoading,
+            onClick = { link ->
+              context.openUrl(link, isExternal = false)
+            },
+          )
+        }
+      },
     )
   }
 }
@@ -153,6 +166,7 @@ private fun ShowDetailContent(
   primaryButton: @Composable () -> Unit,
   credits: @Composable () -> Unit,
   similar: @Composable () -> Unit,
+  videos: @Composable () -> Unit,
 ) {
   var imageHeight by remember { mutableIntStateOf(4000) }
   val density = LocalDensity.current
@@ -226,6 +240,11 @@ private fun ShowDetailContent(
       credits()
     }
     item(
+      key = "videos",
+    ) {
+      videos()
+    }
+    item(
       key = "similar",
     ) {
       similar()
@@ -284,6 +303,9 @@ private fun ShowDetailScreenPreview() {
       },
       similar = {
         Text("Similar goes here")
+      },
+      videos = {
+        Text("Videos goes here")
       },
     )
   }

@@ -9,7 +9,6 @@ android {
 
 dependencies {
   implementation(project(":core:browser"))
-
   implementation(project(":data:model"))
 
   implementation(project(":domain:tmdb-movies"))

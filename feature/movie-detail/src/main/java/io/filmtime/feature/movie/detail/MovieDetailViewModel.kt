@@ -12,6 +12,7 @@ import io.filmtime.domain.bookmarks.ObserveBookmarkUseCase
 import io.filmtime.domain.stream.GetStreamInfoUseCase
 import io.filmtime.domain.tmdb.movies.GetMovieCollectionUseCase
 import io.filmtime.domain.tmdb.movies.GetMovieDetailsUseCase
+import io.filmtime.domain.tmdb.movies.GetMovieVideosUseCase
 import io.filmtime.domain.trakt.GetRatingsUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,6 +33,7 @@ class MovieDetailViewModel @Inject constructor(
   private val observeBookmark: ObserveBookmarkUseCase,
   private val getRatings: GetRatingsUseCase,
   private val getCollection: GetMovieCollectionUseCase,
+  private val getMovieVideos: GetMovieVideosUseCase,
 ) : ViewModel() {
 
   private val videoId: Int = savedStateHandle["video_id"] ?: throw IllegalStateException("videoId is required")
@@ -44,9 +46,15 @@ class MovieDetailViewModel @Inject constructor(
   init {
     loadMovieDetail()
     observeBookmark()
+    loadVideos()
   }
 
-  fun loadMovieDetail() = viewModelScope.launch {
+  fun reload() {
+    loadMovieDetail()
+    loadVideos()
+  }
+
+  private fun loadMovieDetail() = viewModelScope.launch {
     _state.value = _state.value.copy(isLoading = true, error = null)
 
     getMovieDetail(videoId)
@@ -122,5 +130,23 @@ class MovieDetailViewModel @Inject constructor(
 
   fun removeBookmark() = viewModelScope.launch {
     deleteBookmark(videoId, Movie)
+  }
+
+  private fun loadVideos() = viewModelScope.launch {
+    _state.update { state -> state.copy(isTrailersLoading = true) }
+    getMovieVideos(videoId)
+      .fold(
+        onSuccess = {
+          _state.update { state ->
+            state.copy(
+              videos = it,
+              isTrailersLoading = false,
+            )
+          }
+        },
+        onFailure = {
+          _state.update { state -> state.copy(isTrailersLoading = false) }
+        },
+      )
   }
 }

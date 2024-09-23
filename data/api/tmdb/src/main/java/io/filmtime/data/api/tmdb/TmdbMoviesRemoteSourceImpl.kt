@@ -2,6 +2,7 @@ package io.filmtime.data.api.tmdb
 
 import io.filmtime.data.model.GeneralError
 import io.filmtime.data.model.MovieCollection
+import io.filmtime.data.model.MovieVideo
 import io.filmtime.data.model.Person
 import io.filmtime.data.model.Result
 import io.filmtime.data.model.VideoDetail
@@ -12,6 +13,7 @@ import io.filmtime.data.network.TmdbErrorResponse
 import io.filmtime.data.network.TmdbMoviesService
 import io.filmtime.data.network.TmdbVideoListResponse
 import io.filmtime.data.network.adapter.NetworkResponse
+import io.filmtime.data.network.model.Type.Trailer
 import javax.inject.Inject
 
 internal class TmdbMoviesRemoteSourceImpl @Inject constructor(
@@ -92,6 +94,7 @@ internal class TmdbMoviesRemoteSourceImpl @Inject constructor(
           Result.Success(collectionResponse.toCollection())
         }
       }
+
       is NetworkResponse.ApiError -> {
         val errorResponse = result.body
         Result.Failure(GeneralError.ApiError(errorResponse.statusMessage, errorResponse.statusCode))
@@ -104,6 +107,29 @@ internal class TmdbMoviesRemoteSourceImpl @Inject constructor(
   override suspend fun getByGenres(page: Int, genresId: List<Long>): Result<List<VideoThumbnail>, GeneralError> =
     getMovieList {
       tmdbDiscoverService.getMovies(page, genresId.map { it.toString() })
+    }
+
+  override suspend fun getMovieVideos(movieId: Int): Result<List<MovieVideo>, GeneralError> =
+    when (val result = tmdbMoviesService.getMovieVideos(movieId)) {
+      is NetworkResponse.ApiError -> {
+        val errorResponse = result.body
+        Result.Failure(GeneralError.ApiError(errorResponse.statusMessage, errorResponse.statusCode))
+      }
+
+      is NetworkResponse.NetworkError -> Result.Failure(GeneralError.NetworkError)
+      is NetworkResponse.UnknownError -> Result.Failure(GeneralError.UnknownError(result.error))
+      is NetworkResponse.Success -> {
+        val body = result.body
+        if (body == null) {
+          Result.Failure(GeneralError.UnknownError(Throwable("Videos is null")))
+        } else {
+          Result.Success(
+            body.results
+              .filter { it.official && it.type == Trailer }
+              .map { it.toVideos() },
+          )
+        }
+      }
     }
 
   override suspend fun upcomingMovies(

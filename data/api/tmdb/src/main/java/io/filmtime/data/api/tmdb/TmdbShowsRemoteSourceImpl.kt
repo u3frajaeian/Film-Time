@@ -2,6 +2,7 @@ package io.filmtime.data.api.tmdb
 
 import io.filmtime.data.model.EpisodeThumbnail
 import io.filmtime.data.model.GeneralError
+import io.filmtime.data.model.MovieVideo
 import io.filmtime.data.model.Person
 import io.filmtime.data.model.Result
 import io.filmtime.data.model.VideoDetail
@@ -11,6 +12,7 @@ import io.filmtime.data.network.TmdbErrorResponse
 import io.filmtime.data.network.TmdbShowListResponse
 import io.filmtime.data.network.TmdbShowsService
 import io.filmtime.data.network.adapter.NetworkResponse
+import io.filmtime.data.network.model.Type.Trailer
 import javax.inject.Inject
 
 class TmdbShowsRemoteSourceImpl @Inject constructor(
@@ -120,6 +122,29 @@ class TmdbShowsRemoteSourceImpl @Inject constructor(
   override suspend fun getByGenres(page: Int, genresId: List<Long>): Result<List<VideoThumbnail>, GeneralError> =
     getShowsList {
       tmdbDiscoverService.getShows(page, genresId.map { it.toString() })
+    }
+
+  override suspend fun getShowVideos(showId: Int): Result<List<MovieVideo>, GeneralError> =
+    when (val result = tmdbShowsService.getShowVideos(showId)) {
+      is NetworkResponse.ApiError -> {
+        val errorResponse = result.body
+        Result.Failure(GeneralError.ApiError(errorResponse.statusMessage, errorResponse.statusCode))
+      }
+
+      is NetworkResponse.NetworkError -> Result.Failure(GeneralError.NetworkError)
+      is NetworkResponse.UnknownError -> Result.Failure(GeneralError.UnknownError(result.error))
+      is NetworkResponse.Success -> {
+        val body = result.body
+        if (body == null) {
+          Result.Failure(GeneralError.UnknownError(Throwable("Videos is null")))
+        } else {
+          Result.Success(
+            body.results
+              .filter { it.official && it.type == Trailer }
+              .map { it.toVideos() },
+          )
+        }
+      }
     }
 
   override suspend fun similar(showId: Int): Result<List<VideoThumbnail>, GeneralError> =

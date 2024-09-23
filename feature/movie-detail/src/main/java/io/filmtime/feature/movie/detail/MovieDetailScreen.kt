@@ -39,6 +39,7 @@ import io.filmtime.core.ui.common.componnents.VideoInfo
 import io.filmtime.core.ui.common.componnents.VideoSectionRow
 import io.filmtime.core.ui.common.componnents.VideoThumbnailInfo
 import io.filmtime.core.ui.common.componnents.VideoThumbnailPoster
+import io.filmtime.core.ui.common.componnents.VideoTrailerRow
 import io.filmtime.data.model.Preview
 import io.filmtime.data.model.PreviewMovie
 import io.filmtime.data.model.Ratings
@@ -69,7 +70,7 @@ fun MovieDetailScreen(
 
   MovieDetailScreen(
     state = state,
-    onRetry = viewModel::loadMovieDetail,
+    onRetry = viewModel::reload,
     onMovieClick = onMovieClick,
     onAddBookmark = viewModel::addBookmark,
     onRemoveBookmark = viewModel::removeBookmark,
@@ -90,6 +91,7 @@ fun MovieDetailScreen(
   onGenreClick: (VideoGenre, VideoType) -> Unit,
 ) {
   val videoDetail = state.videoDetail
+  val context = LocalContext.current
 
   if (state.isLoading) {
     CircularProgressIndicator(
@@ -124,6 +126,17 @@ fun MovieDetailScreen(
           tmdbId = videoDetail.ids.tmdbId ?: 0,
           videoType = VideoType.Movie,
         )
+      },
+      videos = {
+        state.videos?.let { videos ->
+          VideoTrailerRow(
+            onClick = {
+              context.openUrl(it, isExternal = false)
+            },
+            items = videos,
+            isLoading = state.isTrailersLoading,
+          )
+        }
       },
       collections = {
         state.collection?.let { collections ->
@@ -174,6 +187,7 @@ private fun MovieDetailContent(
   credits: @Composable () -> Unit,
   similar: @Composable () -> Unit,
   collections: @Composable () -> Unit,
+  videos: @Composable () -> Unit,
   traktHistoryButton: @Composable RowScope.() -> Unit,
 ) {
   var imageHeight by remember { mutableIntStateOf(4000) }
@@ -237,6 +251,11 @@ private fun MovieDetailContent(
       collections()
     }
     item(
+      key = "videos",
+    ) {
+      videos()
+    }
+    item(
       key = "similar",
     ) {
       similar()
@@ -296,6 +315,9 @@ private fun MovieDetailScreenPreview() {
       },
       collections = {
         Text("Collections goes here")
+      },
+      videos = {
+        Text("Videos section")
       },
     )
   }

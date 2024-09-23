@@ -2,6 +2,7 @@ package io.filmtime.feature.movie.detail
 
 import io.filmtime.core.ui.common.UiMessage
 import io.filmtime.data.model.MovieCollection
+import io.filmtime.data.model.MovieVideo
 import io.filmtime.data.model.Ratings
 import io.filmtime.data.model.StreamInfo
 import io.filmtime.data.model.VideoDetail
@@ -16,4 +17,6 @@ data class MovieDetailState(
   val isStreamLoading: Boolean = false,
   val streamInfo: StreamInfo? = null,
   val error: UiMessage? = null,
+  val videos: List<MovieVideo>? = null,
+  val isTrailersLoading: Boolean = false,
 )
