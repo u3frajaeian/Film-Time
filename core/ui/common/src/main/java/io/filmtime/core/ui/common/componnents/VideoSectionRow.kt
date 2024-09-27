@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons.AutoMirrored.Rounded
 import androidx.compose.material.icons.automirrored.rounded.ArrowForward
 import androidx.compose.material3.CircularProgressIndicator
@@ -49,6 +50,7 @@ fun VideoSectionRow(
       onSectionClick = onSectionClick,
       title = title,
     )
+    val lazyListState = rememberLazyListState()
     if (isLoading) {
       CircularProgressIndicator(
         modifier = Modifier
@@ -66,6 +68,7 @@ fun VideoSectionRow(
         modifier = Modifier
           .height(180.dp)
           .fillMaxWidth(),
+        state = lazyListState,
         contentPadding = PaddingValues(horizontal = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
       ) {
