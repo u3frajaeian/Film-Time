@@ -8,5 +8,4 @@ android {
 
 dependencies {
   implementation(project(":data:tmdb-movies"))
-
 }

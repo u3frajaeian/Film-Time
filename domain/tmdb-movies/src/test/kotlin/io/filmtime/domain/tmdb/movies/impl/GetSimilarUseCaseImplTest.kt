@@ -1,23 +1,19 @@
 package io.filmtime.domain.tmdb.movies.impl
 
-import io.filmtime.data.model.GeneralError
 import io.filmtime.data.model.GeneralError.ApiError
 import io.filmtime.data.model.GeneralError.NetworkError
 import io.filmtime.data.model.GeneralError.UnknownError
-import io.filmtime.data.model.Result
 import io.filmtime.data.model.Result.Failure
 import io.filmtime.data.model.Result.Success
 import io.filmtime.data.model.VideoId
 import io.filmtime.data.model.VideoThumbnail
 import io.filmtime.data.model.VideoType
-import io.filmtime.domain.tmdb.movies.GetSimilarUseCase
 import io.fimltime.data.tmdb.movies.TmdbMovieRepository
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
-import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
@@ -44,17 +40,15 @@ class GetSimilarUseCaseImplTest {
       UnknownError(Throwable()),
       ApiError("", 0),
     )
-    errorStates.forEachIndexed { i,error ->
+    errorStates.forEachIndexed { i, error ->
       val expectedResult = Failure(error)
       `when`(repository.getSimilar(movieId)).thenReturn(expectedResult)
       val result = getSimilarUseCase.invoke(movieId)
 
       assertTrue(result is Failure)
-      verify(repository, times(i+1)).getSimilar(movieId)
+      verify(repository, times(i + 1)).getSimilar(movieId)
       assertEquals(error, (result as Failure).error)
-
     }
-
   }
 
   @Test
@@ -72,6 +66,5 @@ class GetSimilarUseCaseImplTest {
     assertTrue(result is Success)
     verify(repository).getSimilar(movieId)
     assertEquals(expectedResult, result)
-
   }
 }
