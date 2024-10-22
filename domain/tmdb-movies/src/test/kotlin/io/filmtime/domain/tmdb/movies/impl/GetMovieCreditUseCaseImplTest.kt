@@ -6,9 +6,6 @@ import io.filmtime.data.model.GeneralError.NetworkError
 import io.filmtime.data.model.GeneralError.UnknownError
 import io.filmtime.data.model.Result.Failure
 import io.filmtime.data.model.Result.Success
-import io.filmtime.data.model.VideoId
-import io.filmtime.data.model.VideoThumbnail
-import io.filmtime.data.model.VideoType
 import io.filmtime.domain.tmdb.movies.GetMovieCreditUseCase
 import io.fimltime.data.tmdb.movies.TmdbMovieRepository
 import junit.framework.TestCase.assertTrue
@@ -58,7 +55,7 @@ class GetMovieCreditUseCaseImplTest {
   fun `call getMovieCredit and get credits as well`() = runBlocking {
     val movieId = 1
     val movieCredit = listOf(
-      CreditItem(1,"ActorName","ProfilePoster")
+      CreditItem(1, "ActorName", "ProfilePoster"),
 
     )
     val expectedResult = Success(movieCredit)
