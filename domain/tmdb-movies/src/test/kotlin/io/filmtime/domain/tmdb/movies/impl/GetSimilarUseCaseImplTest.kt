@@ -1,8 +1,10 @@
 package io.filmtime.domain.tmdb.movies.impl
 
+import io.filmtime.data.model.GeneralError
 import io.filmtime.data.model.GeneralError.ApiError
 import io.filmtime.data.model.GeneralError.NetworkError
 import io.filmtime.data.model.GeneralError.UnknownError
+import io.filmtime.data.model.Result
 import io.filmtime.data.model.Result.Failure
 import io.filmtime.data.model.Result.Success
 import io.filmtime.data.model.VideoId
@@ -15,6 +17,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
+import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
@@ -49,7 +52,9 @@ class GetSimilarUseCaseImplTest {
       assertTrue(result is Failure)
       verify(repository, times(i + 1)).getSimilar(movieId)
       assertEquals(error, (result as Failure).error)
+
     }
+
   }
 
   @Test
