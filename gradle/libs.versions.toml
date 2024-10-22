@@ -21,6 +21,7 @@ room = "2.6.1"
 ksp = "1.9.23-1.0.20"
 retrofit = "2.10.0"
 lifecycle = "2.7.0"
+mockiato = "3.11.2"
 
 [libraries]
 androidx-media3-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "media3-exoplayer" }
@@ -63,10 +64,15 @@ room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 
+mockiato-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockiato" }
+mockiato-inline = { group = "org.mockito", name = "mockito-inline", version.ref = "mockiato" }
+
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
+
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }
