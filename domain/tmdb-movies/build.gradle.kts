@@ -8,4 +8,5 @@ android {
 
 dependencies {
   implementation(project(":data:tmdb-movies"))
+  testImplementation(project(":data:database"))
 }
