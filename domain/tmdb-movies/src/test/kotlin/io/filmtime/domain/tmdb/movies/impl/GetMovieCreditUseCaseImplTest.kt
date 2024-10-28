@@ -56,7 +56,7 @@ class GetMovieCreditUseCaseImplTest {
   fun `call getMovieCredit and get credits as well`() = runBlocking {
     val movieId = 1
     val movieCredit = listOf(
-      Person(1, "ActorName", "ProfilePoster","", PersonType.Cast),
+      Person(1, "ActorName", "ProfilePoster", "", PersonType.Cast),
 
     )
     val expectedResult = Success(movieCredit)

@@ -8,8 +8,6 @@ import io.filmtime.data.model.Result.Success
 import io.filmtime.data.model.VideoDetail
 import io.filmtime.data.model.VideoGenre
 import io.filmtime.data.model.VideoId
-import io.filmtime.data.model.VideoThumbnail
-import io.filmtime.data.model.VideoType
 import io.filmtime.domain.tmdb.movies.GetMovieDetailsUseCase
 import io.fimltime.data.tmdb.movies.TmdbMovieRepository
 import junit.framework.TestCase.assertTrue
