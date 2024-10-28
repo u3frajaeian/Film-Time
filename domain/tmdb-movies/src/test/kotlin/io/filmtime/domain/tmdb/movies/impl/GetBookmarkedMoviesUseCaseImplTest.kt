@@ -1,16 +1,10 @@
 package io.filmtime.domain.tmdb.movies.impl
 
-import io.filmtime.data.model.GeneralError.ApiError
-import io.filmtime.data.model.GeneralError.NetworkError
-import io.filmtime.data.model.GeneralError.UnknownError
-import io.filmtime.data.model.Result.Failure
 import io.filmtime.data.model.VideoId
 import io.filmtime.data.model.VideoThumbnail
-import io.filmtime.data.model.VideoType
 import io.filmtime.data.model.VideoType.Movie
 import io.filmtime.domain.tmdb.movies.GetBookmarkedMoviesUseCase
 import io.fimltime.data.tmdb.movies.TmdbMovieRepository
-import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
@@ -43,8 +37,7 @@ class GetBookmarkedMoviesUseCaseImplTest {
     )
     `when`(repository.getBookmarkedMovies()).thenReturn(flowOf(bookmarkedMovies))
     var result = getBookmarkedMoviesUseCase.invoke().toList()
-    assertEquals(bookmarkedMovies,result[0])
+    assertEquals(bookmarkedMovies, result[0])
     verify(repository).getBookmarkedMovies()
   }
-
 }
