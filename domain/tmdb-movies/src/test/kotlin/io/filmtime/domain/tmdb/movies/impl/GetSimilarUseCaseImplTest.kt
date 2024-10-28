@@ -10,7 +10,7 @@ import io.filmtime.data.model.Result.Success
 import io.filmtime.data.model.VideoId
 import io.filmtime.data.model.VideoThumbnail
 import io.filmtime.data.model.VideoType
-import io.filmtime.domain.tmdb.movies.GetSimilarUseCase
+import io.filmtime.domain.tmdb.movies.GetSimilarMoviesUseCase
 import io.fimltime.data.tmdb.movies.TmdbMovieRepository
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.runBlocking
@@ -25,7 +25,7 @@ import org.mockito.MockitoAnnotations
 import kotlin.test.assertEquals
 
 class GetSimilarUseCaseImplTest {
-  private lateinit var getSimilarUseCase: GetSimilarUseCase
+  private lateinit var getSimilarUseCase: GetSimilarMoviesUseCase
 
   @Mock
   private lateinit var repository: TmdbMovieRepository
@@ -33,7 +33,7 @@ class GetSimilarUseCaseImplTest {
   @Before
   fun setUp() {
     MockitoAnnotations.openMocks(this)
-    getSimilarUseCase = GetSimilarUseCaseImpl(repository)
+    getSimilarUseCase = GetSimilarMoviesUseCaseImpl(repository)
   }
 
   @Test

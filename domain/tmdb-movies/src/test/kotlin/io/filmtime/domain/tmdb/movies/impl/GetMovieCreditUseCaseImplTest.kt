@@ -1,12 +1,13 @@
 package io.filmtime.domain.tmdb.movies.impl
 
-import io.filmtime.data.model.CreditItem
 import io.filmtime.data.model.GeneralError.ApiError
 import io.filmtime.data.model.GeneralError.NetworkError
 import io.filmtime.data.model.GeneralError.UnknownError
+import io.filmtime.data.model.Person
+import io.filmtime.data.model.PersonType
 import io.filmtime.data.model.Result.Failure
 import io.filmtime.data.model.Result.Success
-import io.filmtime.domain.tmdb.movies.GetMovieCreditUseCase
+import io.filmtime.domain.tmdb.movies.GetMovieCreditsUseCase
 import io.fimltime.data.tmdb.movies.TmdbMovieRepository
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.runBlocking
@@ -21,7 +22,7 @@ import kotlin.test.assertEquals
 
 class GetMovieCreditUseCaseImplTest {
 
-  private lateinit var getMovieCreditUseCase: GetMovieCreditUseCase
+  private lateinit var getMovieCreditUseCase: GetMovieCreditsUseCase
 
   @Mock
   private lateinit var repository: TmdbMovieRepository
@@ -29,7 +30,7 @@ class GetMovieCreditUseCaseImplTest {
   @Before
   fun setUp() {
     MockitoAnnotations.openMocks(this)
-    getMovieCreditUseCase = GetMovieCreditUseCaseImpl(repository)
+    getMovieCreditUseCase = GetMovieCreditsUseCaseImpl(repository)
   }
 
   @Test
@@ -42,11 +43,11 @@ class GetMovieCreditUseCaseImplTest {
     )
     errorStates.forEachIndexed { i, error ->
       val expectedResult = Failure(error)
-      `when`(repository.getCredit(movieId)).thenReturn(expectedResult)
+      `when`(repository.credits(movieId)).thenReturn(expectedResult)
       val result = getMovieCreditUseCase.invoke(movieId)
 
       assertTrue(result is Failure)
-      verify(repository, times(i + 1)).getCredit(movieId)
+      verify(repository, times(i + 1)).credits(movieId)
       assertEquals(error, (result as Failure).error)
     }
   }
@@ -55,16 +56,16 @@ class GetMovieCreditUseCaseImplTest {
   fun `call getMovieCredit and get credits as well`() = runBlocking {
     val movieId = 1
     val movieCredit = listOf(
-      CreditItem(1, "ActorName", "ProfilePoster"),
+      Person(1, "ActorName", "ProfilePoster","", PersonType.Cast),
 
     )
     val expectedResult = Success(movieCredit)
-    `when`(repository.getCredit(movieId)).thenReturn(expectedResult)
+    `when`(repository.credits(movieId)).thenReturn(expectedResult)
 
     val result = getMovieCreditUseCase.invoke(movieId)
 
     assertTrue(result is Success)
-    verify(repository).getCredit(movieId)
+    verify(repository).credits(movieId)
     assertEquals(expectedResult, result)
   }
 }
