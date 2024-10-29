@@ -11,7 +11,6 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
-import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
@@ -36,7 +35,7 @@ class GetBookmarkedMoviesUseCaseImplTest {
       VideoThumbnail(VideoId(2, 0), "url2", "posterUrl2", 2000, Movie),
     )
     `when`(repository.getBookmarkedMovies()).thenReturn(flowOf(bookmarkedMovies))
-    var result = getBookmarkedMoviesUseCase.invoke().toList()
+    val result = getBookmarkedMoviesUseCase.invoke().toList()
     assertEquals(bookmarkedMovies, result[0])
     verify(repository).getBookmarkedMovies()
   }
