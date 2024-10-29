@@ -53,14 +53,23 @@ class GetMovieCollectionUseCaseImplTest {
       assertEquals(error, (result as Failure).error)
     }
   }
+
   @Test
   fun `should return collection of selected MovieId`(): Unit = runBlocking {
     val movieId = 1
     val movieCollection = MovieCollection(
-      id = 1, name = "movie1", overview = "overview", posterPath = "posterPath", backdropPath = "",
+      id = 1,
+      name = "movie1",
+      overview = "overview",
+      posterPath = "posterPath",
+      backdropPath = "",
       parts = listOf(
         VideoThumbnail(
-          VideoId(1, 0), "url1", "posterUrl", 2000, Movie,
+          VideoId(1, 0),
+          "url1",
+          "posterUrl",
+          2000,
+          Movie,
         ),
         VideoThumbnail(VideoId(2, 0), "url2", "posterUrl2", 2000, Movie),
       ),
@@ -71,6 +80,5 @@ class GetMovieCollectionUseCaseImplTest {
     assertTrue(result is Success)
     assertEquals(expectedResult, result)
     verify(repository).getCollection(movieId)
-
   }
 }

@@ -9,7 +9,6 @@ import io.fimltime.data.tmdb.movies.TmdbMovieRepository
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
-
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
@@ -36,18 +35,19 @@ class GetMoviesByGenreUseCaseImplTest {
     val movieId = 1L
     val movies = listOf(
       VideoThumbnail(
-        VideoId(1, 0), "url1", "posterUrl", 2000, Movie,
+        VideoId(1, 0),
+        "url1",
+        "posterUrl",
+        2000,
+        Movie,
       ),
       VideoThumbnail(VideoId(2, 0), "url2", "posterUrl2", 2000, Movie),
 
-      )
+    )
 
     val expectedResult = PagingData.from(movies)
-    `when`(repository.moviesByGenre(movieId)).thenReturn(flowOf( expectedResult))
+    `when`(repository.moviesByGenre(movieId)).thenReturn(flowOf(expectedResult))
 //    val result = useCase.invoke(movieId).toList()
 //    val items = result[0]
-
-
-
   }
 }
